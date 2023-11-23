@@ -9,7 +9,7 @@ namespace GeometryTests
         public void GetArea_ReturnsCorrectArea()
         {
             var circle = new Circle { Radius = 2 };
-            var expectedArea = Math.PI * 4; // Площадь круга равна Pi * r^2
+            var expectedArea = Math.PI * 4;
             Assert.AreEqual(expectedArea, circle.GetArea());
         }
 
@@ -26,10 +26,10 @@ namespace GeometryTests
             var random = new Random();
             for (int i = 0; i < 100; i++)
             {
-                var radius = random.NextDouble() * 100; // Случайный радиус от 0 до 100
+                var radius = random.NextDouble() * 100;
                 var circle = new Circle { Radius = radius };
                 var expectedArea = Math.PI * Math.Pow(radius, 2);
-                Assert.AreEqual(expectedArea, circle.GetArea(), 1e-10); // Допускаем небольшую погрешность
+                Assert.AreEqual(expectedArea, circle.GetArea(), 1e-10);
             }
         }
 
@@ -45,6 +45,14 @@ namespace GeometryTests
         {
             var circle = new Circle { Radius = double.MaxValue };
             Assert.AreEqual(double.PositiveInfinity, circle.GetArea());
+        }
+
+        [Test]
+        public void GetArea_ReturnsForCorrectDouble()
+        {
+            var circle = new Circle { Radius = 1.5 };
+            var expectedArea = Math.PI * Math.Pow(1.5, 2);
+            Assert.AreEqual(expectedArea, circle.GetArea());
         }
     }
 }

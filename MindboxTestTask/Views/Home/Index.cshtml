@@ -1,76 +1,77 @@
 ﻿<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
-<h2>Circle</h2>
+<h2>Круг</h2>
 <form id="circleForm">
-    <label for="radius">Radius:</label>
-    <input type="number" id="radius" name="radius" step="1" min="0" required>
-    <button type="submit">Calculate Area</button>
+    <label for="radius">Радиус:</label>
+    <input type="number" id="radius" name="radius" step="0.01" min="0" required>
+    <button type="submit">Вычислить площадь</button>
 </form>
 <p id="circleArea"></p>
 
-<h2>Triangle</h2>
+<h2>Треугольник</h2>
 <form id="triangleForm">
-    <label for="sideA">Side A:</label>
-    <input type="number" id="sideA" name="sideA" step="1" min="0" required>
-    <label for="sideB">Side B:</label>
-    <input type="number" id="sideB" name="sideB" step="1" min="0" required>
-    <label for="sideC">Side C:</label>
-    <input type="number" id="sideC" name="sideC" step="1" min="0" required>
-    <button type="submit">Calculate Area</button>
+    <label for="sideA">Сторона A:</label>
+    <input type="number" id="sideA" name="sideA" step="0.01" min="0" required>
+    <label for="sideB">Сторона B:</label>
+    <input type="number" id="sideB" name="sideB" step="0.01" min="0" required>
+    <label for="sideC">Сторона C:</label>
+    <input type="number" id="sideC" name="sideC" step="0.01" min="0" required>
+    <button type="submit">Вычислить площадь</button>
 </form>
 <p id="triangleArea"></p>
 <p id="isRightTriangle"></p>
 
-<h2>Shape</h2>
+<h2>Фигура</h2>
 <form id="shapeForm">
-    <label for="type">Type:</label>
+    <label for="type">Тип:</label>
     <select id="type" name="type" required>
-        <option value="">Select a shape</option>
-        <option value="circle">Circle</option>
-        <option value="triangle">Triangle</option>
-        <option value="square">Square</option>
-        <option value="rectangle">Rectangle</option>
+        <option value="">Выберите фигуру</option>
+        <option value="circle">Круг</option>
+        <option value="triangle">Треугольник</option>
+        <option value="square">Квадрат</option>
+        <option value="rectangle">Прямоугольник</option>
     </select>
     <div id="circleInputs" style="display: none;">
-        <label for="circleRadius">Radius:</label>
-        <input type="number" id="circleRadius" name="parameters" step="1" min="0">
+        <label for="circleRadius">Радиус:</label>
+        <input type="number" id="circleRadius" name="parameters" step="0.01" min="0">
     </div>
     <div id="triangleInputs" style="display: none;">
-        <label for="triangleSideA">Side A:</label>
-        <input type="number" id="triangleSideA" name="parameters" step="1" min="0">
-        <label for="triangleSideB">Side B:</label>
-        <input type="number" id="triangleSideB" name="parameters" step="1" min="0">
-        <label for="triangleSideC">Side C:</label>
-        <input type="number" id="triangleSideC" name="parameters" step="1" min="0">
+        <label for="triangleSideA">Сторона A:</label>
+        <input type="number" id="triangleSideA" name="parameters" step="0.01" min="0">
+        <label for="triangleSideB">Сторона B:</label>
+        <input type="number" id="triangleSideB" name="parameters" step="0.01" min="0">
+        <label for="triangleSideC">Сторона C:</label>
+        <input type="number" id="triangleSideC" name="parameters" step="0.01" min="0">
     </div>
     <div id="squareInputs" style="display: none;">
-        <label for="squareSide">Side:</label>
-        <input type="number" id="squareSide" name="parameters" step="1" min="0">
+        <label for="squareSide">Сторона:</label>
+        <input type="number" id="squareSide" name="parameters" step="0.01" min="0">
     </div>
     <div id="rectangleInputs" style="display: none;">
-        <label for="rectangleLength">Length:</label>
-        <input type="number" id="rectangleLength" name="parameters" step="1" min="0">
-        <label for="rectangleWidth">Width:</label>
-        <input type="number" id="rectangleWidth" name="parameters" step="1" min="0">
+        <label for="rectangleLength">Длина:</label>
+        <input type="number" id="rectangleLength" name="parameters" step="0.01" min="0">
+        <label for="rectangleWidth">Ширина:</label>
+        <input type="number" id="rectangleWidth" name="parameters" step="0.01" min="0">
     </div>
-    <button type="submit">Calculate Area</button>
+    <button type="submit">Вычислить площадь</button>
 </form>
 <p id="shapeArea"></p>
+<p id="isRightTriangleShape"></p>
 
 <script>
     $(document).ready(function () {
         $("#circleForm").submit(function (e) {
             e.preventDefault();
             $.post("/Home/CalculateCircleArea", $(this).serialize(), function (data) {
-                $("#circleArea").text("Area: " + data);
+                $("#circleArea").text("Площадь: " + data);
             });
         });
 
         $("#triangleForm").submit(function (e) {
             e.preventDefault();
             $.post("/Home/CalculateTriangleArea", $(this).serialize(), function (data) {
-                $("#triangleArea").text("Area: " + data.area);
-                $("#isRightTriangle").text("Is right triangle: " + data.isRight);
+                $("#triangleArea").text("Площадь: " + data.area);
+                $("#isRightTriangle").text("Является ли прямоугольным треугольником: " + (data.isRight ? "Да" : "Нет"));
             });
         });
 
@@ -79,7 +80,12 @@
             var type = $("#type").val();
             var parameters = $(this).find('input[name="parameters"]:visible').map(function () { return $(this).val(); }).get();
             $.post("/Home/CalculateArea", { type: type, parameters: parameters }, function (data) {
-                $("#shapeArea").text("Area: " + data);
+                $("#shapeArea").text("Площадь: " + data.area);
+                if (type === "triangle") {
+                    $("#isRightTriangleShape").text("Является ли прямоугольным треугольником: " + (data.isRight ? "Да" : "Нет"));
+                } else {
+                    $("#isRightTriangleShape").text("");
+                }
             });
         });
 
@@ -111,6 +117,8 @@
                 $("#squareInputs").hide();
                 $("#rectangleInputs").hide();
             }
+            $("#shapeArea").text("");
+            $("#isRightTriangleShape").text("");
         });
     });
 </script>

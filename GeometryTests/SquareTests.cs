@@ -9,7 +9,7 @@ namespace GeometryTests
         public void GetArea_ReturnsCorrectArea()
         {
             var square = new Square { Side = 2 };
-            var expectedArea = 4; // Площадь квадрата равна a^2
+            var expectedArea = 4;
             Assert.AreEqual(expectedArea, square.GetArea());
         }
 
@@ -26,10 +26,10 @@ namespace GeometryTests
             var random = new Random();
             for (int i = 0; i < 100; i++)
             {
-                var side = random.NextDouble() * 100; // Случайная сторона от 0 до 100
+                var side = random.NextDouble() * 100;
                 var square = new Square { Side = side };
                 var expectedArea = Math.Pow(side, 2);
-                Assert.AreEqual(expectedArea, square.GetArea(), 1e-10); // Допускаем небольшую погрешность
+                Assert.AreEqual(expectedArea, square.GetArea(), 1e-10);
             }
         }
 
@@ -45,6 +45,14 @@ namespace GeometryTests
         {
             var square = new Square { Side = double.MaxValue };
             Assert.AreEqual(double.PositiveInfinity, square.GetArea());
+        }
+
+        [Test]
+        public void GetArea_ReturnsForCorrectDouble()
+        {
+            var square = new Square { Side = 2.5 };
+            var expectedArea = Math.Pow(2.5, 2);
+            Assert.AreEqual(expectedArea, square.GetArea());
         }
     }
 }

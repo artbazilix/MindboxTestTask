@@ -1,3 +1,4 @@
+using MindboxTestTask.Factories;
 using MindboxTestTask.Interfaces;
 
 var builder = WebApplication.CreateBuilder(args);

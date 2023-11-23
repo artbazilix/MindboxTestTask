@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using MindboxTestTask.Interfaces;
 using MindboxTestTask.Models;
-using System.Collections.Generic;
+using MindboxTestTask.ViewModels;
 
 namespace MindboxTestTask.Controllers
 {
@@ -20,14 +20,14 @@ namespace MindboxTestTask.Controllers
         }
 
         [HttpPost]
-        public JsonResult CalculateCircleArea(Circle circle)
+        public JsonResult CalculateCircleArea(CircleViewModel circle)
         {
             var area = circle.GetArea();
             return Json(area);
         }
 
         [HttpPost]
-        public JsonResult CalculateTriangleArea(Triangle triangle)
+        public JsonResult CalculateTriangleArea(TriangleViewModel triangle)
         {
             var area = triangle.GetArea();
             var isRight = triangle.IsRightTriangle();
@@ -35,11 +35,12 @@ namespace MindboxTestTask.Controllers
         }
 
         [HttpPost]
-        public JsonResult CalculateArea(string type, double[] parameters)
+        public JsonResult CalculateArea(ShapeViewModel shapeViewModel)
         {
-            var shape = _shapeFactory.CreateShape(type, parameters);
+            var shape = _shapeFactory.CreateShape(shapeViewModel.Type, shapeViewModel.Parameters);
             var area = shape.GetArea();
-            return Json(area);
+            var isRight = shape is Triangle triangle ? triangle.IsRightTriangle() : (bool?)null;
+            return Json(new { area, isRight });
         }
     }
 }
