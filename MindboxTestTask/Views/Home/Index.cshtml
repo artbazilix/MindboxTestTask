@@ -1,0 +1,116 @@
+﻿<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+<h2>Circle</h2>
+<form id="circleForm">
+    <label for="radius">Radius:</label>
+    <input type="number" id="radius" name="radius" step="1" min="0" required>
+    <button type="submit">Calculate Area</button>
+</form>
+<p id="circleArea"></p>
+
+<h2>Triangle</h2>
+<form id="triangleForm">
+    <label for="sideA">Side A:</label>
+    <input type="number" id="sideA" name="sideA" step="1" min="0" required>
+    <label for="sideB">Side B:</label>
+    <input type="number" id="sideB" name="sideB" step="1" min="0" required>
+    <label for="sideC">Side C:</label>
+    <input type="number" id="sideC" name="sideC" step="1" min="0" required>
+    <button type="submit">Calculate Area</button>
+</form>
+<p id="triangleArea"></p>
+<p id="isRightTriangle"></p>
+
+<h2>Shape</h2>
+<form id="shapeForm">
+    <label for="type">Type:</label>
+    <select id="type" name="type" required>
+        <option value="">Select a shape</option>
+        <option value="circle">Circle</option>
+        <option value="triangle">Triangle</option>
+        <option value="square">Square</option>
+        <option value="rectangle">Rectangle</option>
+    </select>
+    <div id="circleInputs" style="display: none;">
+        <label for="circleRadius">Radius:</label>
+        <input type="number" id="circleRadius" name="parameters" step="1" min="0">
+    </div>
+    <div id="triangleInputs" style="display: none;">
+        <label for="triangleSideA">Side A:</label>
+        <input type="number" id="triangleSideA" name="parameters" step="1" min="0">
+        <label for="triangleSideB">Side B:</label>
+        <input type="number" id="triangleSideB" name="parameters" step="1" min="0">
+        <label for="triangleSideC">Side C:</label>
+        <input type="number" id="triangleSideC" name="parameters" step="1" min="0">
+    </div>
+    <div id="squareInputs" style="display: none;">
+        <label for="squareSide">Side:</label>
+        <input type="number" id="squareSide" name="parameters" step="1" min="0">
+    </div>
+    <div id="rectangleInputs" style="display: none;">
+        <label for="rectangleLength">Length:</label>
+        <input type="number" id="rectangleLength" name="parameters" step="1" min="0">
+        <label for="rectangleWidth">Width:</label>
+        <input type="number" id="rectangleWidth" name="parameters" step="1" min="0">
+    </div>
+    <button type="submit">Calculate Area</button>
+</form>
+<p id="shapeArea"></p>
+
+<script>
+    $(document).ready(function () {
+        $("#circleForm").submit(function (e) {
+            e.preventDefault();
+            $.post("/Home/CalculateCircleArea", $(this).serialize(), function (data) {
+                $("#circleArea").text("Area: " + data);
+            });
+        });
+
+        $("#triangleForm").submit(function (e) {
+            e.preventDefault();
+            $.post("/Home/CalculateTriangleArea", $(this).serialize(), function (data) {
+                $("#triangleArea").text("Area: " + data.area);
+                $("#isRightTriangle").text("Is right triangle: " + data.isRight);
+            });
+        });
+
+        $("#shapeForm").submit(function (e) {
+            e.preventDefault();
+            var type = $("#type").val();
+            var parameters = $(this).find('input[name="parameters"]:visible').map(function () { return $(this).val(); }).get();
+            $.post("/Home/CalculateArea", { type: type, parameters: parameters }, function (data) {
+                $("#shapeArea").text("Area: " + data);
+            });
+        });
+
+        $("#type").change(function () {
+            var type = $(this).val();
+            if (type == "circle") {
+                $("#circleInputs").show();
+                $("#triangleInputs").hide();
+                $("#squareInputs").hide();
+                $("#rectangleInputs").hide();
+            } else if (type == "triangle") {
+                $("#triangleInputs").show();
+                $("#circleInputs").hide();
+                $("#squareInputs").hide();
+                $("#rectangleInputs").hide();
+            } else if (type == "square") {
+                $("#squareInputs").show();
+                $("#circleInputs").hide();
+                $("#triangleInputs").hide();
+                $("#rectangleInputs").hide();
+            } else if (type == "rectangle") {
+                $("#rectangleInputs").show();
+                $("#circleInputs").hide();
+                $("#triangleInputs").hide();
+                $("#squareInputs").hide();
+            } else {
+                $("#circleInputs").hide();
+                $("#triangleInputs").hide();
+                $("#squareInputs").hide();
+                $("#rectangleInputs").hide();
+            }
+        });
+    });
+</script>
