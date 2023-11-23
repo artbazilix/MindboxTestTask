@@ -7,11 +7,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MindboxTestTask", "MindboxT
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GeometryTests", "GeometryTests\GeometryTests.csproj", "{D785645C-F0AC-4F43-B7FF-67B24910A581}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "QusetionThree", "QusetionThree", "{BE1E7400-92FA-4C51-823E-F9F830EB8E05}"
-	ProjectSection(SolutionItems) = preProject
-		QusetionThree.cs = QusetionThree.cs
-	EndProjectSection
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
